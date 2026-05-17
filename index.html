@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Jpou Conversion</title>
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #f6f8fd 0%, #e9eef5 100%);
+      --container-bg: #ffffff;
+      --text-main: #333333;
+      --text-title: #2c3e50;
+      --text-input: #2d3436;
+      --input-bg: #fcfcfc;
+      --input-border: #dfe6e9;
+      --input-focus: #ffffff;
+      --folder-btn-bg: #ecf0f1;
+      --folder-btn-text: #2c3e50;
+      --folder-btn-hover: #dfe6e9;
+      --status-success-bg: #e8f8f5;
+      --status-success-text: #27ae60;
+      --status-success-border: #c8e6c9;
+      --status-error-bg: #fdf2e9;
+      --status-error-text: #e74c3c;
+      --status-error-border: #fadbd8;
+      --status-info-bg: #ebf5fb;
+      --status-info-text: #2980b9;
+      --status-info-border: #d6eaf8;
+    }
+
+    [data-theme="dark"] {
+      --bg-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      --container-bg: #222831;
+      --text-main: #e8e8e8;
+      --text-title: #ffffff;
+      --text-input: #eeeeee;
+      --input-bg: #1a1a2e;
+      --input-border: #393e46;
+      --input-focus: #16213e;
+      --folder-btn-bg: #393e46;
+      --folder-btn-text: #eeeeee;
+      --folder-btn-hover: #222831;
+      --status-success-bg: rgba(39, 174, 96, 0.15);
+      --status-success-text: #2ecc71;
+      --status-success-border: rgba(39, 174, 96, 0.3);
+      --status-error-bg: rgba(231, 76, 60, 0.15);
+      --status-error-text: #e74c3c;
+      --status-error-border: rgba(231, 76, 60, 0.3);
+      --status-info-bg: rgba(52, 152, 219, 0.15);
+      --status-info-text: #3498db;
+      --status-info-border: rgba(52, 152, 219, 0.3);
+    }
+
+    body { 
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+      padding: 40px 20px; 
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+    
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      background: rgba(255,255,255,0.2);
+      box-shadow: none;
+    }
+
+    .container { 
+      width: 100%;
+      max-width: 500px; 
+      background: var(--container-bg); 
+      padding: 40px 30px; 
+      border-radius: 16px; 
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); 
+      transition: background 0.3s ease;
+    }
+    h1 { 
+      color: var(--text-title); 
+      text-align: center; 
+      font-size: 28px;
+      font-weight: 700;
+      margin-top: 0;
+      margin-bottom: 30px;
+      transition: color 0.3s ease;
+    }
+    h1 span {
+      color: #3498db;
+    }
+    .input-group {
+      margin-bottom: 15px;
+    }
+    input[type="text"], select { 
+      width: 100%; 
+      padding: 14px 16px; 
+      border: 1px solid var(--input-border); 
+      border-radius: 8px; 
+      box-sizing: border-box; 
+      font-family: inherit;
+      font-size: 15px;
+      color: var(--text-input);
+      background-color: var(--input-bg);
+      transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s, color 0.3s;
+    }
+    input[type="text"]:focus, select:focus {
+      outline: none;
+      border-color: #3498db;
+      background-color: var(--input-focus);
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    }
+    .flex-row {
+      display: flex; 
+      gap: 10px; 
+      margin-bottom: 15px;
+    }
+    .flex-row input {
+      margin-bottom: 0;
+    }
+    button { 
+      background: linear-gradient(to right, #3498db, #2980b9);
+      color: white; 
+      cursor: pointer; 
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 14px 20px;
+      width: 100%;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    button:hover { 
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(52, 152, 219, 0.3);
+    }
+    #folderBtn {
+      background: var(--folder-btn-bg);
+      color: var(--folder-btn-text);
+      width: auto;
+      white-space: nowrap;
+      font-weight: 500;
+      transition: background 0.3s, color 0.3s;
+    }
+    #folderBtn:hover {
+      background: var(--folder-btn-hover);
+      box-shadow: none;
+      transform: none;
+    }
+    #status { 
+      margin-top: 25px; 
+      text-align: center; 
+      padding: 15px; 
+      border-radius: 8px; 
+      display: none; 
+      font-size: 14px;
+      transition: background 0.3s, color 0.3s, border-color 0.3s;
+    }
+    .status-success { background: var(--status-success-bg); color: var(--status-success-text); border: 1px solid var(--status-success-border); }
+    .status-error { background: var(--status-error-bg); color: var(--status-error-text); border: 1px solid var(--status-error-border); }
+    .status-info { background: var(--status-info-bg); color: var(--status-info-text); border: 1px solid var(--status-info-border); }
+  </style>
+</head>
+<body>
+  <button id="themeToggle" class="theme-toggle" aria-label="Changer de thème">🌙</button>
+  <div class="container">
+    <h1>Jpou <span>Conversion</span></h1>
+    
+    <div class="input-group">
+      <input type="text" id="url" placeholder="Collez le lien de la vidéo YouTube ici..." />
+    </div>
+    
+    <div class="input-group">
+      <select id="format">
+        <option value="mp4">Format Vidéo (MP4)</option>
+        <option value="mp3">Format Audio (MP3)</option>
+      </select>
+    </div>
+    
+    <div class="flex-row">
+      <button id="folderBtn">Choisir le dossier</button>
+      <input type="text" id="folderPath" readonly placeholder="Dossier de destination..." style="cursor: not-allowed; color: #7f8c8d;" />
+    </div>
+    
+    <div class="input-group">
+      <input type="text" id="filename" placeholder="Renommer le fichier (Optionnel)..." />
+    </div>
+    
+    <button id="downloadBtn">Convertir la vidéo</button>
+    <div id="status"></div>
+  </div>
+  <script src="./renderer.js"></script>
+</body>
+</html>
